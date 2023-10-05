@@ -288,8 +288,8 @@ function App() {
           },
         ]}
         chartType="GeoChart"
-        width="100vh"
-        height="400px"
+        width="100vw"
+        height="60vh"
         data={[visitedHeader, ...visitedCountries]}
         options={{
           legend: "none",
