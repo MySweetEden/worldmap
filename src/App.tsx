@@ -3,8 +3,9 @@ import './App.css'
 import { Chart } from "react-google-charts";
 
 type CountryNamesType = Array<[string, string]>;
-type CountryDataType = Array<[string, number]>;
+type CountryDataType = Array<[string, string, number]>;
 
+const visitedHeader = ["Country Code", "Country Name", "Level"]
 const countryNames: CountryNamesType = [
   ["AF", "Afghanistan"],
   ["AX", "Åland Islands"],
@@ -259,9 +260,8 @@ const countryNames: CountryNamesType = [
 ]
 
 function App() {
-  const visitedHeader = ["Country", "Level"]
   const [visitedCountries, setVisitedCountries] = useState<CountryDataType>(
-      countryNames.map(item => item[0] !== "MaxValData" ? [item[0], 0] : [item[0], 5])
+      countryNames.map(item => item[0] !== "MaxValData" ? [...item, 0] : [...item, 5])
     )
     const handleChartSelect = ({ chartWrapper }: any) => {
     const selection = chartWrapper.getChart().getSelection();
@@ -269,9 +269,9 @@ function App() {
 
     const index = selection[0].row;
     const newVisitedCountries = [...visitedCountries]; // Create a new copy of the visited array
-    newVisitedCountries[index][1] = newVisitedCountries[index][1] + 1;
-    if (newVisitedCountries[index][1] > 5) {
-      newVisitedCountries[index][1] = 0;
+    newVisitedCountries[index][2] = newVisitedCountries[index][2] + 1;
+    if (newVisitedCountries[index][2] > 5) {
+      newVisitedCountries[index][2] = 0;
     }
     console.log(chartWrapper);
     console.log(typeof(chartWrapper));
