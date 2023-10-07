@@ -2,6 +2,8 @@ import { useState } from 'react'
 import '../App.css'
 import { Chart } from "react-google-charts";
 import { useNavigate, useParams } from "react-router-dom";
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 type CountryNamesType = Array<[string, string]>;
 type CountryDataType = Array<[string, string, number]>;
@@ -276,6 +278,9 @@ function Worldmap() {
   const [visitedCountries, setVisitedCountries] = useState<CountryDataType>(
     countryNames.map(item => item[0] !== "MaxValData" ? [...item, paramsDict[item[0]] ? parseInt(paramsDict[item[0]]): 0] : [...item, 5])
   )
+  const [level, setLevel] = useState<number>(
+    visitedCountries.reduce((acc, item) => acc + item[2], 0) - 5
+  )
   // クリック時の処理
   const handleChartSelect = ({ chartWrapper }: any) => {
     const selection = chartWrapper.getChart().getSelection();
@@ -288,12 +293,35 @@ function Worldmap() {
     }
     paramsDict[newVisitedCountries[index][0]] = newVisitedCountries[index][2].toString();
     setVisitedCountries(newVisitedCountries); // Update the state with the new array
+    const newLevel = newVisitedCountries.reduce((acc, item) => acc + item[2], 0) - 5
+    setLevel(newLevel);
     const updatedParams = Object.entries(paramsDict).map(([key, value]) => `${key}=${value}`).join(',');
     navigate(`/${updatedParams}`);
   }
   return (
     <>
-      <h1>Count-Ries</h1>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 11 }}>
+              Count-Ries
+            </Typography>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Level {level}
+            </Typography>
+          </Toolbar>
+        </AppBar> 
+      </Box>
+      <Box marginTop="10vh" />
       <Chart
         chartEvents={[
           {
@@ -303,7 +331,7 @@ function Worldmap() {
         ]}
         chartType="GeoChart"
         width="100vw"
-        height="60vh"
+        height="70vh"
         data={[visitedHeader, ...visitedCountries]}
         options={{
           legend: "none",
