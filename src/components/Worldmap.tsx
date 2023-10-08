@@ -301,7 +301,7 @@ function Worldmap() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" sx={{ background: 'green' }}>
           <Toolbar>
             <IconButton
               size="large"
@@ -321,7 +321,10 @@ function Worldmap() {
           </Toolbar>
         </AppBar> 
       </Box>
-      <Box marginTop="10vh" />
+      <Box marginTop="10vh" />      
+     
+      {/* <h1>&ensp;&ensp;&ensp;Count-Ries</h1>
+      <h1>&ensp;&ensp;&ensp;Level {level}</h1> */}
       <Chart
         chartEvents={[
           {
